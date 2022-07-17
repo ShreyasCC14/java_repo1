@@ -1,0 +1,25 @@
+pipeline{
+    agent {label 'tomcat-slave'}
+    stages{
+        stage ('git checkout'){
+        steps{
+            git 'https://github.com/ShreyasCC14/java_repo1.git'
+            echo "checkout is ok"
+        }
+    }
+    
+     stage ('Build'){
+        steps{
+            sh 'mvn clean install'
+            echo "Build is ok"
+        } 
+    }
+    
+    stage ('deploy war file to tomcat'){
+        steps{
+            sh 'cp /home/ec2-user/slave-floder/workspace/pipelinejob/target/*.war /home/ec2-user/apache-tomcat-8.5.81/webapps'
+            echo "deploy successfull"
+        } 
+    }
+}
+}
